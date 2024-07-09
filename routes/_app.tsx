@@ -15,6 +15,7 @@ export default function App({ Component }: PageProps) {
                 />
 
                 <link rel="stylesheet" href="/styles.css" />
+                <link rel="stylesheet" href="/editor.css" />
                 <link rel="stylesheet" href="/fonts/jetbrains_mono/font.css" />
             </head>
             <body>

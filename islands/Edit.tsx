@@ -21,36 +21,33 @@ function Common(props: {
             ? (
                 isEditor
                     ? (
-                        <>
-                            <link rel="stylesheet" href="/editor.css" />
-                            <div class="editor-container">
-                                <input
-                                    class="editor-title-input"
-                                    onChange={setTitle}
-                                    type="text"
-                                    value={title}
-                                />
-                                <textarea
-                                    class="editor-content-textfield"
-                                    onChange={setContent}
-                                    value={content}
+                        <div class="editor-container">
+                            <input
+                                class="editor-title-input"
+                                onChange={setTitle}
+                                type="text"
+                                value={title}
+                            />
+                            <textarea
+                                class="editor-content-textfield"
+                                onChange={setContent}
+                                value={content}
+                            >
+                            </textarea>
+                            <div class="editor-center">
+                                <button
+                                    class="editor-fancy-button"
+                                    onClick={() =>
+                                        props.callback(
+                                            title,
+                                            content,
+                                            token,
+                                        )}
                                 >
-                                </textarea>
-                                <div class="editor-center">
-                                    <button
-                                        class="editor-fancy-button"
-                                        onClick={() =>
-                                            props.callback(
-                                                title,
-                                                content,
-                                                token,
-                                            )}
-                                    >
-                                        {props.submitText}
-                                    </button>
-                                </div>
+                                    {props.submitText}
+                                </button>
                             </div>
-                        </>
+                        </div>
                     )
                     : <p>You need to be an editor to use this page</p>
             )

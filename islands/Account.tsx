@@ -31,36 +31,38 @@ function Common(
                 </>
             )
             : (
-                <div class="glow-field">
-                    <div class="glow-section">
-                        Username
-                        <input
-                            class="glow-fancy-input"
-                            onChange={setUsername}
-                            type="text"
-                        />
-                    </div>
+                <div class="glow-center">
+                    <div class="glow-field">
+                        <div class="glow-section">
+                            Username
+                            <input
+                                class="glow-fancy-input"
+                                onChange={setUsername}
+                                type="text"
+                            />
+                        </div>
 
-                    <div class="glow-section">
-                        Password
-                        <input
-                            class="glow-fancy-input"
-                            onChange={setPassword}
-                            type="password"
-                        />
-                    </div>
+                        <div class="glow-section">
+                            Password
+                            <input
+                                class="glow-fancy-input"
+                                onChange={setPassword}
+                                type="password"
+                            />
+                        </div>
 
-                    <div class="glow-center">
-                        <button
-                            class="glow-fancy-button"
-                            onClick={() =>
-                                props.submitCallback(
-                                    username,
-                                    password,
-                                )}
-                        >
-                            {props.submitText}
-                        </button>
+                        <div class="glow-center">
+                            <button
+                                class="glow-fancy-button"
+                                onClick={() =>
+                                    props.submitCallback(
+                                        username,
+                                        password,
+                                    )}
+                            >
+                                {props.submitText}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )

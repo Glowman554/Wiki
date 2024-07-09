@@ -21,18 +21,16 @@ export default function View(props: PageProps<Page | null>) {
                             <style dangerouslySetInnerHTML={{ __html: CSS }} />
                         </Head>
                         <div>
-                            <h1
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
+                            <h1 class="glow-section">
                                 {props.data.title}
                                 <EditButton id={props.data.id} />
                             </h1>
 
-                            <h3>
-                                by {props.data.by}
+                            <h3 class="glow-section">
+                                <span>by {props.data.by}</span>
+                                <span>
+                                    {props.data.updateDate.toLocaleDateString()}
+                                </span>
                             </h3>
                         </div>
                         <hr />
