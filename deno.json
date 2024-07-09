@@ -8,7 +8,9 @@
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "deploy": "deno task build && deployctl deploy --prod"
+    "deploy": "deno task build && deployctl deploy --prod --project wiki-6 --entrypoint main.ts",
+    "deploy-compatibility-mikki": "deployctl deploy --prod --project mikki --entrypoint compatibility/mikki/index.ts",
+    "docker-build": "docker build -t glowman554/wiki ."
   },
   "lint": {
     "rules": {
@@ -35,10 +37,19 @@
     "zod": "npm:zod",
     "drizzle-orm": "npm:drizzle-orm",
     "drizzle-orm/sqlite-core": "npm:drizzle-orm/sqlite-core",
-    "@libsql/client": "npm:@libsql/client"
+    "@libsql/client": "npm:@libsql/client",
+    "$gfm": "https://deno.land/x/gfm@0.2.3/mod.ts"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
+  },
+  "deploy": {
+    "project": "5cc18ab9-78fa-4905-b0ac-c5afdc083722",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "main.ts"
   }
 }

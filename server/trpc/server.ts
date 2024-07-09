@@ -6,6 +6,15 @@ import {
     getUserByToken,
     passwordOk,
 } from "../users.ts";
+import {
+    createPage,
+    deletePage,
+    getPage,
+    getPages,
+    getPageTitle,
+    updatePage,
+} from "../page.ts";
+import { getChangelog, insertChange } from "../changelog.ts";
 import superjson from "superjson";
 
 const t = initTRPC.create({ transformer: superjson });
@@ -14,6 +23,14 @@ const usernameAndPassword = z.object({
     username: z.string(),
     password: z.string(),
 });
+
+async function editorOnly(token: string) {
+    const user = await getUserByToken(token);
+    if (!user || !user.editor) {
+        throw new Error("Not allowed");
+    }
+    return user;
+}
 
 const users = t.router({
     test: t.procedure.input(z.string()).query(
@@ -37,6 +54,66 @@ const users = t.router({
             return createToken(input.username);
         },
     ),
+    isEditor: t.procedure.input(z.string()).query(async ({ input }) => {
+        const user = await getUserByToken(input);
+        if (!user) {
+            throw new Error("Invalid token");
+        }
+        return user.editor;
+    }),
+});
+
+const pages = t.router({
+    create: t.procedure.input(
+        z.object({
+            token: z.string(),
+            title: z.string(),
+            content: z.string(),
+        }),
+    ).mutation(async ({ input }) => {
+        const user = await editorOnly(input.token);
+        await insertChange(`'${input.title}' was created`, user.username);
+        return createPage(user.username, input.title, input.content);
+    }),
+    update: t.procedure.input(
+        z.object({
+            token: z.string(),
+            id: z.number().int(),
+            title: z.string(),
+            content: z.string(),
+        }),
+    ).mutation(async ({ input }) => {
+        const user = await editorOnly(input.token);
+        await insertChange(`'${input.title}' was updated`, user.username);
+        await updatePage(input.title, input.content, input.id);
+    }),
+    delete: t.procedure.input(
+        z.object({
+            token: z.string(),
+            id: z.number().int(),
+        }),
+    ).mutation(async ({ input }) => {
+        const user = await editorOnly(input.token);
+        await insertChange(
+            `'${await getPageTitle(input.id)}' was deleted`,
+            user.username,
+        );
+        await deletePage(input.id);
+    }),
+    list: t.procedure.query(() => {
+        return getPages();
+    }),
+    load: t.procedure.input(z.number().int()).query(({ input }) => {
+        return getPage(input);
+    }),
+});
+
+const changelog = t.router({
+    load: t.procedure.input(z.number().int().max(25)).query(
+        ({ input }) => {
+            return getChangelog(input);
+        },
+    ),
 });
 
 export const appRouter = t.router({
@@ -44,6 +121,8 @@ export const appRouter = t.router({
         return `hello ${input ?? "world"}`;
     }),
     users,
+    pages,
+    changelog,
 });
 
 export type AppRouter = typeof appRouter;

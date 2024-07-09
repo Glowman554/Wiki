@@ -4,10 +4,20 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $account_create from "./routes/account/create.tsx";
+import * as $account_login from "./routes/account/login.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
+import * as $api_pages_export_id_ from "./routes/api/pages/export/[id].tsx";
+import * as $api_pages_list from "./routes/api/pages/list.ts";
 import * as $api_trpc_path_ from "./routes/api/trpc/[...path].ts";
+import * as $changelog from "./routes/changelog.tsx";
 import * as $index from "./routes/index.tsx";
+import * as $page_create from "./routes/page/create.tsx";
+import * as $page_edit_id_ from "./routes/page/edit/[id].tsx";
+import * as $page_view_id_ from "./routes/page/view/[id].tsx";
 import * as $Account from "./islands/Account.tsx";
+import * as $Edit from "./islands/Edit.tsx";
+import * as $EditButton from "./islands/EditButton.tsx";
 import * as $Error from "./islands/Error.tsx";
 import * as $Navigation from "./islands/Navigation.tsx";
 import * as $TrpcPlayground from "./islands/TrpcPlayground.tsx";
@@ -17,12 +27,22 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/account/create.tsx": $account_create,
+    "./routes/account/login.tsx": $account_login,
     "./routes/api/joke.ts": $api_joke,
+    "./routes/api/pages/export/[id].tsx": $api_pages_export_id_,
+    "./routes/api/pages/list.ts": $api_pages_list,
     "./routes/api/trpc/[...path].ts": $api_trpc_path_,
+    "./routes/changelog.tsx": $changelog,
     "./routes/index.tsx": $index,
+    "./routes/page/create.tsx": $page_create,
+    "./routes/page/edit/[id].tsx": $page_edit_id_,
+    "./routes/page/view/[id].tsx": $page_view_id_,
   },
   islands: {
     "./islands/Account.tsx": $Account,
+    "./islands/Edit.tsx": $Edit,
+    "./islands/EditButton.tsx": $EditButton,
     "./islands/Error.tsx": $Error,
     "./islands/Navigation.tsx": $Navigation,
     "./islands/TrpcPlayground.tsx": $TrpcPlayground,

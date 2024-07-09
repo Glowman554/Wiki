@@ -5,6 +5,10 @@ export function Navigation() {
     return (
         <div class={mainBarClass}>
             <a href="/">Home</a>
+            <a href="/account/login">Login</a>
+            <a href="/account/create">Register</a>
+            <a href="/page/create">Create page</a>
+            <a href="/changelog">Changelog</a>
 
             <a
                 href="javascript:void(0);"

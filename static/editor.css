@@ -1,0 +1,48 @@
+.editor-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: .5rem;
+    border-radius: 7px;
+
+    background-color: #77777777;
+}
+
+.editor-title-input {
+    padding: .5rem;
+    border-radius: 7px;
+    border: none;
+
+    margin-bottom: .5rem;
+
+    background-color: gray;
+}
+
+.editor-content-textfield {
+    height: 50vh;
+    resize: none;
+
+    padding: .5rem;
+    border-radius: 7px;
+    border: none;
+
+    margin-bottom: .5rem;
+
+    background-color: gray;
+}
+
+.editor-fancy-button {
+    width: 15rem;
+
+    padding: .5rem;
+    margin: .5rem;
+    border-radius: 7px;
+    border: none;
+
+    background-color: gray;
+}
+
+.editor-center {
+    display: flex;
+    justify-content: center;
+}

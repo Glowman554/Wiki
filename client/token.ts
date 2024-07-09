@@ -23,3 +23,19 @@ export function useToken() {
 
     return token;
 }
+
+export function useIsEditor(token: string | undefined) {
+    const setError = useContext(ErrorContext);
+    const [isEditor, setIsEditor] = useState(false);
+
+    useEffect(() => {
+        if (token) {
+            erroring(
+                trpc.users.isEditor.query(token).then(setIsEditor),
+                setError,
+            );
+        }
+    }, [token]);
+
+    return isEditor;
+}
