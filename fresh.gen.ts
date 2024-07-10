@@ -18,8 +18,8 @@ import * as $page_view_id_ from "./routes/page/view/[id].tsx";
 import * as $Account from "./islands/Account.tsx";
 import * as $Edit from "./islands/Edit.tsx";
 import * as $EditButton from "./islands/EditButton.tsx";
-import * as $Error from "./islands/Error.tsx";
 import * as $Navigation from "./islands/Navigation.tsx";
+import * as $Query from "./islands/Query.tsx";
 import * as $TrpcPlayground from "./islands/TrpcPlayground.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -43,8 +43,8 @@ const manifest = {
     "./islands/Account.tsx": $Account,
     "./islands/Edit.tsx": $Edit,
     "./islands/EditButton.tsx": $EditButton,
-    "./islands/Error.tsx": $Error,
     "./islands/Navigation.tsx": $Navigation,
+    "./islands/Query.tsx": $Query,
     "./islands/TrpcPlayground.tsx": $TrpcPlayground,
   },
   baseUrl: import.meta.url,

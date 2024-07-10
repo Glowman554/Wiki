@@ -1,38 +1,36 @@
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { trpc } from "../server/trpc/client.ts";
-import { ErrorContext } from "../islands/Error.tsx";
-import { erroring } from "./helper.ts";
+import { useQuery, withQuery } from "./helper.ts";
 
 export function useToken() {
-    const setError = useContext(ErrorContext);
-    const [token, setToken] = useState<string | undefined>(undefined);
-
-    useEffect(() => {
+    const query = useQuery(async () => {
         const token = localStorage.getItem("token");
         if (token) {
-            erroring(
-                trpc.users.test.query(token).then((ok) => {
-                    if (ok) {
-                        setToken(token);
-                    }
-                }),
-                setError,
-            );
+            const ok = await trpc.users.test.query(token);
+            if (ok) {
+                return token;
+            }
         }
-    }, []);
+        return undefined;
+    });
 
-    return token;
+    return query;
 }
 
-export function useIsEditor(token: string | undefined) {
-    const setError = useContext(ErrorContext);
+export function useIsEditor(
+    token: string | undefined,
+    setIsLoading: (l: boolean) => void,
+    setError: (err: string) => void,
+) {
     const [isEditor, setIsEditor] = useState(false);
 
     useEffect(() => {
         if (token) {
-            erroring(
-                trpc.users.isEditor.query(token).then(setIsEditor),
+            withQuery(
+                () => trpc.users.isEditor.query(token),
+                setIsLoading,
                 setError,
+                setIsEditor,
             );
         }
     }, [token]);

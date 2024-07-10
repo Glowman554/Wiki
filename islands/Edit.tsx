@@ -1,9 +1,9 @@
-import { useContext } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { useIsEditor, useToken } from "../client/token.ts";
-import { erroring, useInput } from "../client/helper.ts";
+import { useInput, withQuery } from "../client/helper.ts";
 import { trpc } from "../server/trpc/client.ts";
-import { ErrorContext } from "./Error.tsx";
 import { Page } from "../server/page.ts";
+import { Query } from "./Query.tsx";
 
 function Common(props: {
     initialTitle: string;
@@ -11,15 +11,16 @@ function Common(props: {
     submitText: string;
     callback: (title: string, content: string, token: string) => void;
 }) {
-    const token = useToken();
+    const { result: token, setIsLoading, setError, error, isLoading } =
+        useToken();
     const [title, setTitle] = useInput(props.initialTitle);
     const [content, setContent] = useInput(props.initialContent);
-    const isEditor = useIsEditor(token);
+    const isEditor = useIsEditor(token, setIsLoading, setError);
 
     return (
-        token
-            ? (
-                isEditor
+        <Query error={error} isLoading={isLoading}>
+            {token
+                ? (isEditor
                     ? (
                         <div class="editor-container">
                             <input
@@ -49,53 +50,67 @@ function Common(props: {
                             </div>
                         </div>
                     )
-                    : <p>You need to be an editor to use this page</p>
-            )
-            : <p>You need to be logged in to use this page</p>
+                    : <p>You need to be an editor to use this page</p>)
+                : <p>You need to be logged in to use this page</p>}
+        </Query>
     );
 }
 
 export function CreateField() {
-    const setError = useContext(ErrorContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | undefined>(undefined);
+
     const callback = (title: string, content: string, token: string) => {
-        erroring(
-            trpc.pages.create.mutate({ token, title, content }).then((id) =>
-                location.href = `/page/view/${id}`
-            ),
+        withQuery(
+            () => trpc.pages.create.mutate({ token, title, content }),
+            setIsLoading,
             setError,
+            (id) => {
+                location.href = `/page/view/${id}`;
+            },
         );
     };
     return (
-        <Common
-            initialTitle="Default title"
-            initialContent=""
-            submitText="Create page"
-            callback={callback}
-        />
+        <Query error={error} isLoading={isLoading}>
+            <Common
+                initialTitle="Default title"
+                initialContent=""
+                submitText="Create page"
+                callback={callback}
+            />
+        </Query>
     );
 }
 
 export function EditField(props: { page: Page }) {
-    const setError = useContext(ErrorContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | undefined>(undefined);
 
     const callback = (title: string, content: string, token: string) => {
-        erroring(
-            trpc.pages.update.mutate({
-                token,
-                title,
-                content,
-                id: props.page.id,
-            }).then(() => location.href = `/page/view/${props.page.id}`),
+        withQuery(
+            () =>
+                trpc.pages.update.mutate({
+                    token,
+                    title,
+                    content,
+                    id: props.page.id,
+                }),
+            setIsLoading,
             setError,
+            () => {
+                location.href = `/page/view/${props.page.id}`;
+            },
         );
     };
 
     return (
-        <Common
-            initialTitle={props.page.title}
-            initialContent={props.page.content}
-            submitText="Update page"
-            callback={callback}
-        />
+        <Query error={error} isLoading={isLoading}>
+            <Common
+                initialTitle={props.page.title}
+                initialContent={props.page.content}
+                submitText="Update page"
+                callback={callback}
+            />
+        </Query>
     );
 }
