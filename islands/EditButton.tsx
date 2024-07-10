@@ -22,37 +22,35 @@ export function EditButton(props: { id: number }) {
     };
 
     return (
-        isEditor
-            ? (
-                <span>
-                    {q.isLoading
-                        ? (
-                            <img
-                                class="glow-spinner"
-                                src="/loading.svg"
-                                style={{
-                                    width: "2rem",
-                                }}
-                            />
-                        )
-                        : (
-                            <>
-                                <a href={"/page/edit/" + props.id}>
-                                    <img
-                                        src="/edit.svg"
-                                        style={{ width: "2rem" }}
-                                    />
-                                </a>
-                                <a onClick={deleteCallback}>
-                                    <img
-                                        src="/delete.svg"
-                                        style={{ width: "2rem" }}
-                                    />
-                                </a>
-                            </>
-                        )}
-                </span>
-            )
-            : <></>
+        <span>
+            {q.isLoading
+                ? (
+                    <img
+                        class="glow-spinner"
+                        src="/loading.svg"
+                        style={{
+                            width: "2rem",
+                        }}
+                    />
+                )
+                : (isEditor
+                    ? (
+                        <>
+                            <a href={"/page/edit/" + props.id}>
+                                <img
+                                    src="/edit.svg"
+                                    style={{ width: "2rem" }}
+                                />
+                            </a>
+                            <a onClick={deleteCallback}>
+                                <img
+                                    src="/delete.svg"
+                                    style={{ width: "2rem" }}
+                                />
+                            </a>
+                        </>
+                    )
+                    : <></>)}
+        </span>
     );
 }
