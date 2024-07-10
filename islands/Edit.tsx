@@ -1,9 +1,8 @@
-import { useState } from "preact/hooks";
 import { useIsEditor, useToken } from "../client/token.ts";
-import { useInput, withQuery } from "../client/helper.ts";
+import { useInput, useQueryState, withQuery } from "../client/helper.ts";
 import { trpc } from "../server/trpc/client.ts";
 import { Page } from "../server/page.ts";
-import { Query } from "./Query.tsx";
+import { Query } from "../components/Query.tsx";
 
 function Common(props: {
     initialTitle: string;
@@ -11,14 +10,14 @@ function Common(props: {
     submitText: string;
     callback: (title: string, content: string, token: string) => void;
 }) {
-    const { result: token, setIsLoading, setError, error, isLoading } =
-        useToken();
+    const q = useQueryState();
+    const token = useToken(q);
     const [title, setTitle] = useInput(props.initialTitle);
     const [content, setContent] = useInput(props.initialContent);
-    const isEditor = useIsEditor(token, setIsLoading, setError);
+    const isEditor = useIsEditor(token, q);
 
     return (
-        <Query error={error} isLoading={isLoading}>
+        <Query q={q}>
             {token
                 ? (isEditor
                     ? (
@@ -57,21 +56,19 @@ function Common(props: {
 }
 
 export function CreateField() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | undefined>(undefined);
+    const q = useQueryState();
 
     const callback = (title: string, content: string, token: string) => {
         withQuery(
             () => trpc.pages.create.mutate({ token, title, content }),
-            setIsLoading,
-            setError,
+            q,
             (id) => {
                 location.href = `/page/view/${id}`;
             },
         );
     };
     return (
-        <Query error={error} isLoading={isLoading}>
+        <Query q={q}>
             <Common
                 initialTitle="Default title"
                 initialContent=""
@@ -83,8 +80,7 @@ export function CreateField() {
 }
 
 export function EditField(props: { page: Page }) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | undefined>(undefined);
+    const q = useQueryState();
 
     const callback = (title: string, content: string, token: string) => {
         withQuery(
@@ -95,8 +91,7 @@ export function EditField(props: { page: Page }) {
                     content,
                     id: props.page.id,
                 }),
-            setIsLoading,
-            setError,
+            q,
             () => {
                 location.href = `/page/view/${props.page.id}`;
             },
@@ -104,7 +99,7 @@ export function EditField(props: { page: Page }) {
     };
 
     return (
-        <Query error={error} isLoading={isLoading}>
+        <Query q={q}>
             <Common
                 initialTitle={props.page.title}
                 initialContent={props.page.content}

@@ -1,10 +1,11 @@
 import { useIsEditor, useToken } from "../client/token.ts";
 import { trpc } from "../server/trpc/client.ts";
-import { withQuery } from "../client/helper.ts";
+import { useQueryState, withQuery } from "../client/helper.ts";
 
 export function EditButton(props: { id: number }) {
-    const { result: token, setError, setIsLoading, isLoading } = useToken();
-    const isEditor = useIsEditor(token, setIsLoading, setError);
+    const q = useQueryState();
+    const token = useToken(q);
+    const isEditor = useIsEditor(token, q);
 
     const deleteCallback = () => {
         if (!token) {
@@ -13,8 +14,7 @@ export function EditButton(props: { id: number }) {
 
         withQuery(
             () => trpc.pages.delete.mutate({ token, id: props.id }),
-            setIsLoading,
-            setError,
+            q,
             () => {
                 location.href = "/";
             },
@@ -25,7 +25,7 @@ export function EditButton(props: { id: number }) {
         isEditor
             ? (
                 <span>
-                    {isLoading
+                    {q.isLoading
                         ? (
                             <img
                                 class="glow-spinner"

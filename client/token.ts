@@ -1,8 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
 import { trpc } from "../server/trpc/client.ts";
-import { useQuery, withQuery } from "./helper.ts";
+import { QueryState, useQuery, withQuery } from "./helper.ts";
 
-export function useToken() {
+export function useToken(q: QueryState) {
     const query = useQuery(async () => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -12,15 +12,13 @@ export function useToken() {
             }
         }
         return undefined;
-    });
+    }, q);
 
     return query;
 }
-
 export function useIsEditor(
     token: string | undefined,
-    setIsLoading: (l: boolean) => void,
-    setError: (err: string) => void,
+    q: QueryState,
 ) {
     const [isEditor, setIsEditor] = useState(false);
 
@@ -28,8 +26,7 @@ export function useIsEditor(
         if (token) {
             withQuery(
                 () => trpc.users.isEditor.query(token),
-                setIsLoading,
-                setError,
+                q,
                 setIsEditor,
             );
         }
