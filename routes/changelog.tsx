@@ -1,3 +1,4 @@
+import { Head } from "$fresh/runtime.ts";
 import { getChangelog } from "../server/changelog.ts";
 
 export default async function Changelog() {
@@ -5,6 +6,9 @@ export default async function Changelog() {
 
     return (
         <div class="glow-text">
+            <Head>
+                <title>Wiki - Changelog</title>
+            </Head>
             <table class="glow-table">
                 {changelog.map((change) => (
                     <tr class="glow-tr">

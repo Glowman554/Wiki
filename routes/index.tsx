@@ -1,3 +1,4 @@
+import { Head } from "$fresh/runtime.ts";
 import { getPages } from "../server/page.ts";
 
 export default async function Home() {
@@ -5,6 +6,9 @@ export default async function Home() {
 
     return (
         <div class="glow-text">
+            <Head>
+                <title>Wiki</title>
+            </Head>
             <ul>
                 {pages.map((page) => (
                     <li key={page.id}>

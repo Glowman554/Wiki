@@ -19,6 +19,7 @@ export default function View(props: PageProps<Page | null>) {
                     <>
                         <Head>
                             <style dangerouslySetInnerHTML={{ __html: CSS }} />
+                            <title>Wiki - {props.data.title}</title>
                         </Head>
                         <div>
                             <h1 class="glow-section">
