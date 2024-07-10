@@ -3,7 +3,7 @@ import { trpc } from "../server/trpc/client.ts";
 import { useQueryState, withQuery } from "../client/helper.ts";
 
 export function EditButton(props: { id: number }) {
-    const q = useQueryState();
+    const q = useQueryState(true);
     const token = useToken(q);
     const isEditor = useIsEditor(token, q);
 

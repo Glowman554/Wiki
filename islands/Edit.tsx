@@ -10,7 +10,7 @@ function Common(props: {
     submitText: string;
     callback: (title: string, content: string, token: string) => void;
 }) {
-    const q = useQueryState();
+    const q = useQueryState(true);
     const token = useToken(q);
     const [title, setTitle] = useInput(props.initialTitle);
     const [content, setContent] = useInput(props.initialContent);
@@ -56,7 +56,7 @@ function Common(props: {
 }
 
 export function CreateField() {
-    const q = useQueryState();
+    const q = useQueryState(false);
 
     const callback = (title: string, content: string, token: string) => {
         withQuery(
@@ -80,7 +80,7 @@ export function CreateField() {
 }
 
 export function EditField(props: { page: Page }) {
-    const q = useQueryState();
+    const q = useQueryState(false);
 
     const callback = (title: string, content: string, token: string) => {
         withQuery(
