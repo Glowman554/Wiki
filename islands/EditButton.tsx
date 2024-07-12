@@ -1,11 +1,14 @@
 import { useIsEditor, useToken } from "../client/token.ts";
 import { trpc } from "../server/trpc/client.ts";
 import { useQueryState, withQuery } from "../client/helper.ts";
+import { useState } from "preact/hooks";
+import { ContinueBox } from "./ContinueBox.tsx";
 
 export function EditButton(props: { id: number }) {
     const q = useQueryState(true);
     const token = useToken(q);
     const isEditor = useIsEditor(token, q);
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
 
     const deleteCallback = () => {
         if (!token) {
@@ -42,12 +45,23 @@ export function EditButton(props: { id: number }) {
                                     style={{ width: "2rem" }}
                                 />
                             </a>
-                            <a onClick={deleteCallback}>
+                            <a onClick={() => setShowConfirmBox(true)}>
                                 <img
                                     src="/delete.svg"
                                     style={{ width: "2rem" }}
                                 />
                             </a>
+                            {showConfirmBox
+                                ? (
+                                    <ContinueBox
+                                        cancelCallback={() => {}}
+                                        continueCallback={deleteCallback}
+                                        resetCallback={() =>
+                                            setShowConfirmBox(false)}
+                                        message="You are about to delete this page!"
+                                    />
+                                )
+                                : <></>}
                         </>
                     )
                     : <></>)}
