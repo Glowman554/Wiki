@@ -55,7 +55,7 @@ function Common(props: {
     );
 }
 
-export function CreateField() {
+export function CreatePageField() {
     const q = useQueryState(false);
 
     const callback = (title: string, content: string, token: string) => {
@@ -79,7 +79,7 @@ export function CreateField() {
     );
 }
 
-export function EditField(props: { page: Page }) {
+export function EditPageField(props: { page: Page }) {
     const q = useQueryState(false);
 
     const callback = (title: string, content: string, token: string) => {

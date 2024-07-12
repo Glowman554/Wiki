@@ -1,25 +1,20 @@
-import { Handlers, PageProps } from "$fresh/server.ts";
-import { Head } from "$fresh/runtime.ts";
-import { EditField } from "../../../islands/Edit.tsx";
-import { getPage, Page } from "../../../server/page.ts";
+import { PageProps } from "fresh";
+import { EditPageField } from "../../../islands/Edit.tsx";
+import { getPage } from "../../../server/page.ts";
 
-export const handler: Handlers<Page | null> = {
-    async GET(_req, ctx) {
-        const id = Number(ctx.params.id);
-        return ctx.render(await getPage(id));
-    },
-};
+export default async function Edit(props: PageProps) {
+    const id = Number(props.params.id);
+    const page = await getPage(id);
 
-export default function Edit(props: PageProps<Page | null>) {
     return (
         <div class="glow-text">
-            {props.data
+            {page
                 ? (
                     <>
-                        <Head>
-                            <title>Wiki - {props.data.title} (editor)</title>
-                        </Head>
-                        <EditField page={props.data} />
+                        <head>
+                            <title>Wiki - {page.title} (editor)</title>
+                        </head>
+                        <EditPageField page={page} />
                     </>
                 )
                 : <p>Page not found</p>}

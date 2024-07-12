@@ -1,43 +1,38 @@
-import { Handlers, PageProps } from "$fresh/server.ts";
-import { Head } from "$fresh/runtime.ts";
-import { getPage, Page } from "../../../server/page.ts";
-import { CSS, render } from "$gfm";
+import { getPage } from "../../../server/page.ts";
+import { CSS, render } from "@deno/gfm";
 import { EditButton } from "../../../islands/EditButton.tsx";
+import { PageProps } from "fresh";
 
-export const handler: Handlers<Page | null> = {
-    async GET(_req, ctx) {
-        const id = Number(ctx.params.id);
-        return ctx.render(await getPage(id));
-    },
-};
+export default async function View(props: PageProps) {
+    const id = Number(props.params.id);
+    const page = await getPage(id);
 
-export default function View(props: PageProps<Page | null>) {
     return (
         <div class="glow-text">
-            {props.data
+            {page
                 ? (
                     <>
-                        <Head>
+                        <head>
                             <style dangerouslySetInnerHTML={{ __html: CSS }} />
-                            <title>Wiki - {props.data.title}</title>
-                        </Head>
+                            <title>Wiki - {page.title}</title>
+                        </head>
                         <div>
                             <h1 class="glow-section">
-                                {props.data.title}
-                                <EditButton id={props.data.id} />
+                                {page.title}
+                                <EditButton id={page.id} />
                             </h1>
 
                             <h3 class="glow-section">
-                                <span>by {props.data.by}</span>
+                                <span>by {page.by}</span>
                                 <span>
-                                    {props.data.updateDate.toLocaleDateString()}
+                                    {page.updateDate.toLocaleDateString()}
                                 </span>
                             </h3>
                         </div>
                         <hr />
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: render(props.data.content, {
+                                __html: render(page.content, {
                                     disableHtmlSanitization: true,
                                 }),
                             }}

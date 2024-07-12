@@ -1,13 +1,12 @@
-import { Head } from "$fresh/runtime.ts";
-import { CreateField } from "../../islands/Edit.tsx";
+import { CreatePageField } from "../../islands/Edit.tsx";
 
 export default function Create() {
     return (
         <div class="glow-text">
-            <Head>
+            <head>
                 <title>Wiki - Create</title>
-            </Head>
-            <CreateField />
+            </head>
+            <CreatePageField />
         </div>
     );
 }
