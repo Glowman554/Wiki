@@ -1,5 +1,5 @@
 import { useIsEditor, useToken } from "../client/token.ts";
-import { useInput, useQueryState, withQuery } from "../client/helper.ts";
+import { useInput, useQueryState, useTextarea, withQuery } from "../client/helper.ts";
 import { trpc } from "../server/trpc/client.ts";
 import { Page } from "../server/page.ts";
 import { Query } from "../components/Query.tsx";
@@ -13,7 +13,7 @@ function Common(props: {
     const q = useQueryState(true);
     const token = useToken(q);
     const [title, setTitle] = useInput(props.initialTitle);
-    const [content, setContent] = useInput(props.initialContent);
+    const [content, setContent] = useTextarea(props.initialContent);
     const isEditor = useIsEditor(token, q);
 
     return (
