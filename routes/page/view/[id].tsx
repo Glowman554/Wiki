@@ -1,7 +1,13 @@
 import { getPage } from "../../../server/page.ts";
-import { CSS, render } from "@deno/gfm";
+import { render } from "@deno/gfm";
 import { EditButton } from "../../../islands/EditButton.tsx";
 import { PageProps } from "fresh";
+
+import "prismjs/components/prism-json.js";
+import "prismjs/components/prism-java.js";
+import "prismjs/components/prism-typescript.js";
+import "prismjs/components/prism-c.js";
+import "prismjs/components/prism-cobol.js";
 
 export default async function View(props: PageProps) {
     const id = Number(props.params.id);
@@ -13,7 +19,7 @@ export default async function View(props: PageProps) {
                 ? (
                     <>
                         <head>
-                            <style dangerouslySetInnerHTML={{ __html: CSS }} />
+                            <link href="/prism.css" rel="stylesheet" />
                             <title>Wiki - {page.title}</title>
                         </head>
                         <div>
@@ -30,14 +36,15 @@ export default async function View(props: PageProps) {
                             </h3>
                         </div>
                         <hr />
-                        <div
+                        <main
+                            class="markdown-body"
                             dangerouslySetInnerHTML={{
                                 __html: render(page.content, {
                                     disableHtmlSanitization: true,
                                 }),
                             }}
                         >
-                        </div>
+                        </main>
                     </>
                 )
                 : <p>Page not found</p>}

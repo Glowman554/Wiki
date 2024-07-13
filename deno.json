@@ -31,6 +31,7 @@
     "drizzle-orm": "npm:drizzle-orm@0.32.0",
     "fresh": "jsr:@fresh/core@^2.0.0-alpha.19",
     "preact": "npm:preact@^10.22.1",
+    "prismjs": "npm:prismjs@^1.29.0",
     "superjson": "npm:superjson@2.2.1",
     "zod": "npm:zod@3.23.8"
   },
