@@ -2,12 +2,15 @@ import { eq, sql } from "drizzle-orm";
 import { db } from "./database/drizzle.ts";
 import { pages } from "./database/schema.ts";
 
-export interface Page {
+export interface PartialPage {
     id: number;
     title: string;
-    content: string;
     creationDate: Date;
     updateDate: Date;
+}
+
+export interface Page extends PartialPage {
+    content: string;
     by: string;
 }
 
@@ -40,7 +43,7 @@ export async function getPage(id: number): Promise<Page | null> {
     return maybe[0];
 }
 
-export async function getPages() {
+export async function getPages(): Promise<PartialPage[]> {
     return await db.select({
         id: pages.id,
         title: pages.title,
